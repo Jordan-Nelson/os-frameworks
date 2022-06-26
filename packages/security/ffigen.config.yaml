@@ -1,6 +1,6 @@
 # ffigen config for Apple's Security Framework
 # to regenerate, run: dart run ffigen --config ffigen.config.yaml
-output: "lib/security_framework.dart"
+output: "lib/src/security.bindings.dart"
 name: "Security"
 description: "Bindings for the Security Framework"
 headers:

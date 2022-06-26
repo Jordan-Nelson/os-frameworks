@@ -11,8 +11,8 @@ import 'utils.dart';
 class KeyChain {
   const KeyChain({this.serviceName = 'com.example.app'});
 
-  static final security = Security(DynamicLibrary.executable());
-  static final coreFoundation = CoreFoundation(DynamicLibrary.executable());
+  // static final security = Security(DynamicLibrary.executable());
+  // static final coreFoundation = CoreFoundation(DynamicLibrary.executable());
 
   // The value of the service name attribute for all KeyChain items.
   final String serviceName;
@@ -62,10 +62,10 @@ class KeyChain {
     final query = _createCFDictionary(map: baseQueryAttributes, arena: arena);
     final data = _createCFData(value: value, arena: arena);
     final attributes = _createCFDictionary(
-      map: {security.kSecValueData: data},
+      map: {Security.instance.kSecValueData: data},
       arena: arena,
     );
-    final status = security.SecItemUpdate(query, attributes);
+    final status = Security.instance.SecItemUpdate(query, attributes);
     if (status != errSecSuccess) {
       throw _getExceptionFromResultCode(status);
     }
@@ -85,11 +85,11 @@ class KeyChain {
     final query = _createCFDictionary(
       map: {
         ...baseQueryAttributes,
-        security.kSecValueData: secret,
+        Security.instance.kSecValueData: secret,
       },
       arena: arena,
     );
-    final status = security.SecItemAdd(query, nullptr);
+    final status = Security.instance.SecItemAdd(query, nullptr);
     if (status != errSecSuccess) {
       throw _getExceptionFromResultCode(status);
     }
@@ -107,7 +107,7 @@ class KeyChain {
       map: baseQueryAttributes,
       arena: arena,
     );
-    final status = security.SecItemDelete(query);
+    final status = Security.instance.SecItemDelete(query);
     if (status != errSecSuccess) {
       throw _getExceptionFromResultCode(status);
     }
@@ -121,20 +121,21 @@ class KeyChain {
     final query = _createCFDictionary(
       map: {
         ...baseQueryAttributes,
-        security.kSecMatchLimit: security.kSecMatchLimitOne,
-        security.kSecReturnData: coreFoundation.kCFBooleanTrue,
+        Security.instance.kSecMatchLimit: Security.instance.kSecMatchLimitOne,
+        Security.instance.kSecReturnData:
+            CoreFoundation.instance.kCFBooleanTrue,
       },
       arena: arena,
     );
     final queryResult = arena<CFTypeRef>();
-    final status = security.SecItemCopyMatching(query, queryResult);
+    final status = Security.instance.SecItemCopyMatching(query, queryResult);
     if (status != errSecSuccess) {
       throw _getExceptionFromResultCode(status);
     }
     try {
       final CFDataRef cfData = queryResult.value.cast();
       final value = cfData.toDartString();
-      coreFoundation.CFRelease(cfData.cast());
+      CoreFoundation.instance.CFRelease(cfData.cast());
       return value;
     } on Exception {
       throw UnknownException();
@@ -149,9 +150,9 @@ class KeyChain {
     final account = _createCFString(value: key, arena: arena);
     final service = _createCFString(value: serviceName, arena: arena);
     return {
-      security.kSecClass: security.kSecClassGenericPassword,
-      security.kSecAttrAccount: account,
-      security.kSecAttrService: service,
+      Security.instance.kSecClass: Security.instance.kSecClassGenericPassword,
+      Security.instance.kSecAttrAccount: account,
+      Security.instance.kSecAttrService: service,
     };
   }
 
@@ -173,7 +174,7 @@ class KeyChain {
       valuesPtr[index] = entry.value.cast();
       index++;
     }
-    final cFDictionary = coreFoundation.CFDictionaryCreate(
+    final cFDictionary = CoreFoundation.instance.CFDictionaryCreate(
       nullptr, // default allocator
       keysPtr,
       valuesPtr,
@@ -182,7 +183,7 @@ class KeyChain {
       nullptr, // no-op callback
     );
     arena.onReleaseAll(() {
-      coreFoundation.CFRelease(cFDictionary.cast());
+      CoreFoundation.instance.CFRelease(cFDictionary.cast());
     });
     return cFDictionary;
   }
@@ -194,13 +195,13 @@ class KeyChain {
     required String value,
     required Arena arena,
   }) {
-    final cfString = coreFoundation.CFStringCreateWithCString(
+    final cfString = CoreFoundation.instance.CFStringCreateWithCString(
       nullptr, // default allocator
       value.toNativeUtf8(allocator: arena).cast<Char>(),
       kCFStringEncodingUTF8,
     );
     arena.onReleaseAll(() {
-      coreFoundation.CFRelease(cfString.cast());
+      CoreFoundation.instance.CFRelease(cfString.cast());
     });
     return cfString;
   }
@@ -215,13 +216,13 @@ class KeyChain {
     final valuePtr = value.toNativeUtf8(allocator: arena);
     final length = valuePtr.length;
     final bytes = valuePtr.cast<UnsignedChar>();
-    final cfData = coreFoundation.CFDataCreate(
+    final cfData = CoreFoundation.instance.CFDataCreate(
       nullptr, // default allocator
       bytes,
       length,
     );
     arena.onReleaseAll(() {
-      coreFoundation.CFRelease(cfData.cast());
+      CoreFoundation.instance.CFRelease(cfData.cast());
     });
     return cfData;
   }
@@ -242,7 +243,7 @@ class _SecurityFrameworkError {
 
   /// Creates an error from the given result code.
   factory _SecurityFrameworkError.fromCode(int code) {
-    final cfString = security.SecCopyErrorMessageString(code, nullptr);
+    final cfString = Security.instance.SecCopyErrorMessageString(code, nullptr);
     if (cfString == nullptr) {
       return _SecurityFrameworkError(
         code: code,
@@ -259,7 +260,7 @@ class _SecurityFrameworkError {
       );
     } finally {
       if (cfString != nullptr) {
-        coreFoundation.CFRelease(cfString.cast());
+        CoreFoundation.instance.CFRelease(cfString.cast());
       }
     }
   }

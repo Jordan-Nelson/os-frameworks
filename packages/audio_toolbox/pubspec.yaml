@@ -1,4 +1,4 @@
-name: audio_toolbox
+name: audio_toolbox_framework
 description: ffi bindings for the AudioToolbox Framework
 version: 0.1.0
 publish_to: none
