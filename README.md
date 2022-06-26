@@ -21,7 +21,7 @@ The current frameworks have bindings generated.
 - [ ] AppleScriptKit
 - [ ] AppleScriptObjC
 - [ ] ApplicationServices
-- [ ] AudioToolbox
+- [x] AudioToolbox
 - [ ] AudioUnit
 - [ ] AudioVideoBridging
 - [ ] AuthenticationServices
