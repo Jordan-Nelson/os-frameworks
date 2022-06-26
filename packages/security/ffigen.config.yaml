@@ -1,0 +1,96 @@
+# ffigen config for Apple's Security Framework
+# to regenerate, run: dart run ffigen --config ffigen.config.yaml
+output: "lib/security_framework.dart"
+name: "Security"
+description: "Bindings for the Security Framework"
+headers:
+  entry-points:
+    - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Security.framework/Headers/Security.h"
+compiler-opts:
+  - "-F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
+comments:
+  length: brief
+functions:
+  include:
+    - Sec.*
+  exclude:
+    - SecKeychainGetVersion
+    - SecTransformRegister
+structs:
+  include:
+    - NONE
+enums:
+  include:
+    - NONE
+globals:
+  include:
+    - kSec.*
+macros:
+  include:
+    - NONE
+unions:
+  include:
+    - NONE
+unnamed-enums:
+  include:
+    - errSec.*
+library-imports:
+  coreFoundation: "package:core_foundation_framework/core_foundation_framework.dart"
+type-map:
+  "typedefs":
+    "CFStringRef":
+      "lib": "coreFoundation"
+      "c-type": "CFStringRef"
+      "dart-type": "CFStringRef"
+    "CFTypeRef":
+      "lib": "coreFoundation"
+      "c-type": "CFTypeRef"
+      "dart-type": "CFTypeRef"
+    "CFDictionaryRef":
+      "lib": "coreFoundation"
+      "c-type": "CFDictionaryRef"
+      "dart-type": "CFDictionaryRef"
+    "CFErrorRef":
+      "lib": "coreFoundation"
+      "c-type": "CFErrorRef"
+      "dart-type": "CFErrorRef"
+    "CFDateRef":
+      "lib": "coreFoundation"
+      "c-type": "CFDateRef"
+      "dart-type": "CFDateRef"
+    "CFTypeID":
+      "lib": "coreFoundation"
+      "c-type": "CFTypeID"
+      "dart-type": "int"
+    "CFAllocatorRef":
+      "lib": "coreFoundation"
+      "c-type": "CFAllocatorRef"
+      "dart-type": "CFAllocatorRef"
+    "CFDataRef":
+      "lib": "coreFoundation"
+      "c-type": "CFDataRef"
+      "dart-type": "CFDataRef"
+    "CFArrayRef":
+      "lib": "coreFoundation"
+      "c-type": "CFArrayRef"
+      "dart-type": "CFArrayRef"
+    "CFOptionFlags":
+      "lib": "coreFoundation"
+      "c-type": "CFOptionFlags"
+      "dart-type": "int"
+    "CFIndex":
+      "lib": "coreFoundation"
+      "c-type": "CFIndex"
+      "dart-type": "int"
+    "CFAbsoluteTime":
+      "lib": "coreFoundation"
+      "c-type": "CFAbsoluteTime"
+      "dart-type": "double"
+    "CFURLRef":
+      "lib": "coreFoundation"
+      "c-type": "CFURLRef"
+      "dart-type": "CFURLRef"
+    "CFReadStreamRef":
+      "lib": "coreFoundation"
+      "c-type": "CFReadStreamRef"
+      "dart-type": "CFReadStreamRef"

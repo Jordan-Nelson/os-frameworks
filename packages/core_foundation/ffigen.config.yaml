@@ -1,0 +1,14 @@
+# ffigen config for Apple's CoreFoundation Framework
+# to regenerate, run: dart run ffigen --config ffigen.config.yaml
+output: "lib/core_foundation_framework.dart"
+name: "CoreFoundation"
+description: "Bindings for the CoreFoundation Framework"
+headers:
+  entry-points:
+    - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h"
+compiler-opts:
+  - "-F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
+structs:
+  exclude:
+    - mach_msg_context_trailer_t
+    - mach_msg_mac_trailer_t

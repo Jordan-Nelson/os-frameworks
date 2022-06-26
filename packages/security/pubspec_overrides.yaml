@@ -1,0 +1,3 @@
+dependency_overrides:
+  core_foundation_framework:
+    path: ../core_foundation
