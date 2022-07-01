@@ -1,7 +1,7 @@
 # ffigen config for Apple's AudioToolbox Framework
 # to regenerate, run: dart run ffigen --config ffigen.config.yaml
 output: "lib/src/audio_toolbox.bindings.dart"
-name: "AudioToolbox"
+name: "AudioToolboxBindings"
 description: "Bindings for the AudioToolbox Framework"
 headers:
   entry-points:

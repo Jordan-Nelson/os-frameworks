@@ -1,7 +1,7 @@
 # ffigen config for Apple's CoreFoundation Framework
 # to regenerate, run: dart run ffigen --config ffigen.config.yaml
 output: "lib/src/core_foundation.bindings.dart"
-name: "CoreFoundation"
+name: "CoreFoundationBindings"
 description: "Bindings for the CoreFoundation Framework"
 headers:
   entry-points:
